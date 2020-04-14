@@ -22,7 +22,7 @@ export default {
     EventService.getEvents()
       .then(response => {
         this.events = response.data
-        console.log(response.data)
+        // console.log(response.data)
       })
       .catch(error => {
         console.log('ERROR EROROROROR:' + error.response)

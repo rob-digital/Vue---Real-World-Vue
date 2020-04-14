@@ -10,6 +10,11 @@
     <address>{{ event.location }}</address>
     <h2>Event details</h2>
     <p>{{ event.description }}</p>
+    <div class="pokemon">
+      <img :src="url" alt="" width="50px" />
+      <h4>{{ name }} from API</h4>
+    </div>
+
     <h2>
       Attendees
       <span class="badge -fill-gradient">{{
@@ -34,14 +39,26 @@ export default {
   props: ['id'],
   data() {
     return {
-      event: {}
+      event: {},
+      url: '',
+      name: ''
     }
   },
   created() {
     EventService.getEvent(this.id)
       .then(response => {
         this.event = response.data
-        console.log(response.data)
+        // console.log(response.data)
+      })
+      .catch(error => {
+        console.log('Ther was an error:', error.response)
+      })
+
+    EventService.getPokemon(this.id)
+      .then(response => {
+        this.url = response.data.sprites.front_default
+        this.name = response.data.name
+        console.log(response.data.sprites.front_default)
       })
       .catch(error => {
         console.log('Ther was an error:', error.response)
@@ -51,6 +68,10 @@ export default {
 </script>
 
 <style scoped>
+.pokemon {
+  border: 2px solid salmon;
+  border-radius: 5px;
+}
 .location {
   margin-bottom: 0;
 }
@@ -68,5 +89,8 @@ export default {
 .list-group > .list-item {
   padding: 1em 0;
   border-bottom: solid 1px #e5e5e5;
+}
+img {
+  width: 100px !important;
 }
 </style>
